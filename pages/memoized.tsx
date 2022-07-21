@@ -1,9 +1,12 @@
+import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useUser, userState } from '../state/user';
 import styles from '../styles/Home.module.css';
+
+const MemoizedRecursive = React.memo(Recursive);
 
 function Recursive({ iterationLimit, index = 0 }: { iterationLimit: number; index?: number }) {
   const user = useUser();
@@ -22,7 +25,7 @@ function Recursive({ iterationLimit, index = 0 }: { iterationLimit: number; inde
           <p>userState.renderCount: {userState.renderCount}</p>
         </div>
       </Card>
-      {index + 1 < iterationLimit && <Recursive iterationLimit={iterationLimit} index={index + 1} />}
+      {index + 1 < iterationLimit && <MemoizedRecursive iterationLimit={iterationLimit} index={index + 1} />}
     </>
   );
 }
@@ -54,7 +57,7 @@ const Home: NextPage = () => {
         </h1>
 
         <div className={styles.grid}>
-          <Recursive iterationLimit={25} />
+          <MemoizedRecursive iterationLimit={25} />
         </div>
       </main>
 
